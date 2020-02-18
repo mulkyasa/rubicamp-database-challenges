@@ -87,7 +87,7 @@ INSERT INTO mata_kuliah (
 )
 VALUES (
     'MK01',
-    'Bahasa Inggris',
+    'Data Mining',
     '2'
 ),
 (
@@ -222,3 +222,50 @@ INNER JOIN kontrak
 INNER JOIN mata_kuliah
     ON mata_kuliah.id_matakuliah = kontrak.id_matakuliah
 WHERE nilai BETWEEN 'A' AND 'B';
+
+-- 4
+SELECT mahasiswa.nama_mahasiswa, SUM(mata_kuliah.sks)
+FROM mahasiswa
+INNER JOIN kontrak
+    ON mahasiswa.nim = kontrak.nim
+INNER JOIN mata_kuliah
+    ON mata_kuliah.id_matakuliah = kontrak.id_matakuliah
+GROUP BY
+    kontrak.nim
+HAVING
+    SUM(sks) > 10;
+
+-- 5
+SELECT mahasiswa.nama_mahasiswa, nama_matakuliah
+FROM mahasiswa
+INNER JOIN kontrak
+    ON mahasiswa.nim = kontrak.nim
+INNER JOIN mata_kuliah
+    ON mata_kuliah.id_matakuliah = kontrak.id_matakuliah
+WHERE nama_matakuliah = 'Data Mining';
+
+-- 6
+SELECT dosen.nama_dosen, COUNT(kontrak.nip)
+FROM dosen
+INNER JOIN kontrak
+    ON dosen.nip = kontrak.nip
+GROUP BY
+    kontrak.nip;
+
+-- 7
+SELECT nama_mahasiswa, umur
+FROM mahasiswa
+ORDER BY umur DESC;
+
+-- 8
+SELECT nama_mahasiswa, nama_dosen, nama_matakuliah, nama_jurusan, nilai
+FROM kontrak
+INNER JOIN mahasiswa
+    ON mahasiswa.nim = kontrak.nim
+INNER JOIN dosen
+    ON dosen.nip = kontrak.nip
+INNER JOIN mata_kuliah
+    ON mata_kuliah.id_matakuliah = kontrak.id_matakuliah
+INNER JOIN jurusan
+    ON jurusan.id_jurusan = mahasiswa.id_jurusan
+WHERE nilai BETWEEN 'D' AND 'E';
