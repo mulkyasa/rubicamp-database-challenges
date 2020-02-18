@@ -25,12 +25,12 @@ CREATE TABLE dosen (
 
 CREATE TABLE kontrak (
     id_kontrak VARCHAR(10) NOT NULL PRIMARY KEY,
-    id_mahasiswa VARCHAR(10),
+    nim VARCHAR(10),
     id_matakuliah VARCHAR(10),
     nip VARCHAR(10),
     nilai VARCHAR(1),
-    FOREIGN KEY (id_mahasiswa)
-        REFERENCES mahasiswa (id_mahasiswa),
+    FOREIGN KEY (nim)
+        REFERENCES mahasiswa (nim),
     FOREIGN KEY (id_matakuliah)
         REFERENCES mata_kuliah (id_matakuliah),
     FOREIGN KEY (nip)
@@ -81,9 +81,9 @@ VALUES (
 );
 
 INSERT INTO mata_kuliah (
-    id_matakuliah
+    id_matakuliah,
     nama_matakuliah,
-    sks,
+    sks
 )
 VALUES (
     'MK01',
@@ -93,12 +93,12 @@ VALUES (
 (
     'MK02',
     'Bahasa Arab',
-    '2'
+    '4'
 ),
 (
     'MK03',
     'Ilmu Komputer',
-    '2'
+    '6'
 );
 
 INSERT INTO dosen (
@@ -120,7 +120,7 @@ VALUES (
 
 INSERT INTO kontrak (
     id_kontrak,
-    id_mahasiswa,
+    nim,
     id_matakuliah,
     nip,
     nilai
@@ -188,3 +188,37 @@ VALUES (
     'D213',
     'D'
 );
+
+-- 1
+SELECT nim, nama_mahasiswa, alamat, nama_jurusan
+FROM mahasiswa
+INNER JOIN jurusan
+    ON jurusan.id_jurusan = mahasiswa.id_jurusan;
+
+ALTER TABLE mahasiswa
+ADD COLUMN umur INT NULL;
+
+UPDATE mahasiswa
+SET umur = 19 
+WHERE nim = 'M111';
+
+UPDATE mahasiswa
+SET umur = 25 
+WHERE nim = 'M112';
+
+UPDATE mahasiswa
+SET umur = 32 
+WHERE nim = 'M113';
+
+-- 2
+SELECT * FROM mahasiswa
+WHERE umur BETWEEN 1 AND 19;
+
+-- 3
+SELECT mahasiswa.nama_mahasiswa, mata_kuliah.nama_matakuliah, kontrak.nilai
+FROM mahasiswa
+INNER JOIN kontrak
+    ON mahasiswa.nim = kontrak.nim
+INNER JOIN mata_kuliah
+    ON mata_kuliah.id_matakuliah = kontrak.id_matakuliah
+WHERE nilai BETWEEN 'A' AND 'B';
